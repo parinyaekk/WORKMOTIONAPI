@@ -16,6 +16,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\ContentController.cs" />
+    <Compile Remove="Controllers\CounterController.cs" />
+    <Compile Remove="Controllers\EmployeeController.cs" />
+    <Compile Remove="Controllers\LoginController.cs" />
+    <Compile Remove="Controllers\MasterController.cs" />
+    <Compile Remove="Controllers\PermissionController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="ClosedXML" Version="0.95.4" />
     <PackageReference Include="EFCore.BulkExtensions" Version="2.1.1" />
@@ -23,9 +32,9 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="2.2.0" />
-    <PackageReference Include="Npgsql" Version="5.0.3" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.5.0" />

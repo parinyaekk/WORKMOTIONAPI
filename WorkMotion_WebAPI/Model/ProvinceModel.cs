@@ -8,12 +8,16 @@ namespace WorkMotion_WebAPI.Model
 {
     public class ProvinceModel
     {
-        public class Province
+        public class GROUP_COURSE
         {
             [Key]
-            public int ID { get; set; }
-            public int? Lang_ID { get; set; }
-            public string Province_Name { get; set; }
+            public long GROUP_COURSE_ID { get; set; }
+            public string GROUP_COURSE_NAME { get; set; }
+            public bool? IS_ACTIVE { get; set; }
+            public string CREATE_BY { get; set; }
+            public DateTime? CREATE_DATE { get; set; }
+            public string UPDATE_BY { get; set; }
+            public DateTime? UPDATE_DATE { get; set; }
         }
     }
 }

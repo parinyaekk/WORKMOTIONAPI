@@ -38,7 +38,7 @@ namespace WorkMotion_WebAPI
 
             services.AddDbContext<ASCCContext>(Options =>
             {
-                Options.UseNpgsql(Configuration.GetConnectionString("ASCCConnection"));
+                Options.UseSqlServer(Configuration.GetConnectionString("WorkMotionConnection"));
             });
         }
 

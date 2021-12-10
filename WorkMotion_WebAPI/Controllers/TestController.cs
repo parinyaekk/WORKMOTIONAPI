@@ -21,8 +21,10 @@ namespace WorkMotion_WebAPI.Controllers
     [ApiController]
     public class TestController : ControllerBase
     {
-        public TestController() 
+        private readonly ASCCContext _dbContext;
+        public TestController(ASCCContext dbContext) 
         {
+            _dbContext = dbContext;
         }
 
         [HttpPost("TestHelloWorld")]
@@ -31,6 +33,21 @@ namespace WorkMotion_WebAPI.Controllers
             try
             {
                 return Ok(new ResponseModel { Message = "Hello World !", Status = APIStatus.Successful });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpPost("ConnectMSSQL")]
+        public async Task<IActionResult> ConnectMSSQL()
+        {
+            try
+            {
+                var test = _dbContext.GROUP_COURSE.ToList();
+
+                return Ok(new ResponseModel { Message = Message.Successfully, Status = APIStatus.Successful, Data = test });
             }
             catch (Exception ex)
             {
