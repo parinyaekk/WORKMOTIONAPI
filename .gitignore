@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/Model/obj
+/WorkMotion_WebAPI/Resources/File/*
+/WorkMotion_WebAPI/obj
+/WorkMotion_WebAPI/bin
