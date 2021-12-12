@@ -49,7 +49,11 @@ namespace WorkMotion_WebAPI
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors("MyAllowSpecificOrigins");
+            app.UseCors(
+                options => options.WithOrigins("http://localhost:3000/*").AllowAnyMethod()
+            );
+
+            //app.UseCors("MyAllowSpecificOrigins");
 
             app.UseHttpsRedirection();
 

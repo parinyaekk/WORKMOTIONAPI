@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static WorkMotion_WebAPI.Model.BaseModel;
-using static WorkMotion_WebAPI.Model.LoginModel;
 
 namespace WorkMotion_WebAPI.Controllers
 {
@@ -45,7 +44,7 @@ namespace WorkMotion_WebAPI.Controllers
         {
             try
             {
-                var test = _dbContext.GROUP_COURSE.ToList();
+                var test = _dbContext.BANNER.ToList();
 
                 return Ok(new ResponseModel { Message = Message.Successfully, Status = APIStatus.Successful, Data = test });
             }

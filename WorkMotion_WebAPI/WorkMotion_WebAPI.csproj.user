@@ -3,5 +3,6 @@
   <PropertyGroup>
     <NameOfLastUsedPublishProfile>C:\Users\BOOM\Source\Repos\ASAPI\ASCC_WebAPI\Properties\PublishProfiles\FolderProfile.pubxml</NameOfLastUsedPublishProfile>
     <ActiveDebugProfile>IIS Express</ActiveDebugProfile>
+    <ShowAllFiles>true</ShowAllFiles>
   </PropertyGroup>
 </Project>
