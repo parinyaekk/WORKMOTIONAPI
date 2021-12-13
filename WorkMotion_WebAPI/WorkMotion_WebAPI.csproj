@@ -20,7 +20,6 @@
     <Compile Remove="Controllers\CounterController.cs" />
     <Compile Remove="Controllers\EmployeeController.cs" />
     <Compile Remove="Controllers\LoginController.cs" />
-    <Compile Remove="Controllers\MasterController.cs" />
     <Compile Remove="Controllers\PermissionController.cs" />
   </ItemGroup>
 

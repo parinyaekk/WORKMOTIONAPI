@@ -31,6 +31,7 @@ namespace WorkMotion_WebAPI
             services.AddControllers();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1.0", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Main API v1.0", Version = "v1.0" });
@@ -49,15 +50,19 @@ namespace WorkMotion_WebAPI
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(
-                options => options.WithOrigins("http://localhost:3000/*").AllowAnyMethod()
-            );
-
-            //app.UseCors("MyAllowSpecificOrigins");
-
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(builder =>
+            {
+                builder.WithOrigins("http://localhost:3000");
+                builder.AllowAnyHeader();
+                builder.WithExposedHeaders("Token-Expired");
+                builder.AllowAnyMethod();
+                builder.AllowCredentials();
+                builder.Build();
+            });
 
             app.UseAuthorization();
 

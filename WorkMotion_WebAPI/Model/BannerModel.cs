@@ -11,7 +11,7 @@ namespace WorkMotion_WebAPI.Model
         public class BANNER
         {
             [Key]
-            public int? Banner_ID { get; set; }
+            public int Banner_ID { get; set; }
             public string Banner_Name { get; set; }
             public string Banner_Topic { get; set; }
             public string Banner_Description { get; set; }
@@ -22,6 +22,15 @@ namespace WorkMotion_WebAPI.Model
             public DateTime? CreateDate { get; set; }
             public string UpdateBy { get; set; }
             public DateTime? UpdateDate { get; set; }
+        }
+
+        public class Request_Banner
+        {
+            public int? Banner_ID { get; set; }
+            public string Banner_Name { get; set; }
+            public string Banner_Topic { get; set; }
+            public string Banner_Description { get; set; }
+            public string Banner_Image_Path { get; set; }
         }
     }
 }
