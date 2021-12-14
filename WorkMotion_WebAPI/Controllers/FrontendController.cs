@@ -78,5 +78,51 @@ namespace WorkMotion_WebAPI.Controllers
                 throw ex;
             }
         }
+
+        [HttpGet("GetOptionHDYH")]
+        public async Task<IActionResult> GetOptionHDYH()
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var dataOptionHDYH = _dbContext.HDYH_OPTION.Where(x => x.ActiveFlag == true);
+
+                    if (dataOptionHDYH != null)
+                    {
+                        return Ok(new ResponseModel { Message = Message.Success, Status = APIStatus.Successful, Data = dataOptionHDYH });
+                    }
+                    return Ok(new ResponseModel { Message = Message.Failed, Status = APIStatus.Error, Data = null });
+                }
+                return Ok(new ResponseModel { Message = Message.InvalidPostedData, Status = APIStatus.SystemError });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet("GetOptionStartUp")]
+        public async Task<IActionResult> GetOptionStartUp()
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var dataOptionStartUp = _dbContext.STARTUP_OPTION.Where(x => x.ActiveFlag == true);
+
+                    if (dataOptionStartUp != null)
+                    {
+                        return Ok(new ResponseModel { Message = Message.Success, Status = APIStatus.Successful, Data = dataOptionStartUp });
+                    }
+                    return Ok(new ResponseModel { Message = Message.Failed, Status = APIStatus.Error, Data = null });
+                }
+                return Ok(new ResponseModel { Message = Message.InvalidPostedData, Status = APIStatus.SystemError });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

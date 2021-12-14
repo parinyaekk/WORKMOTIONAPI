@@ -10,6 +10,9 @@ using static WorkMotion_WebAPI.Model.IndustriesModel;
 using static WorkMotion_WebAPI.Model.CategoriesModel;
 using static WorkMotion_WebAPI.Model.NewsModel;
 using static WorkMotion_WebAPI.Model.NewsFileModel;
+using static WorkMotion_WebAPI.Model.HDYH_OptionModel;
+using static WorkMotion_WebAPI.Model.Startup_OptionModel;
+using static WorkMotion_WebAPI.Model.TeamModel;
 
 namespace WorkMotion_WebAPI.BaseModel
 {
@@ -23,6 +26,9 @@ namespace WorkMotion_WebAPI.BaseModel
         public DbSet<CATEGORIES> CATEGORIES { get; set; }
         public DbSet<NEWS> NEWS { get; set; }
         public DbSet<NEWSFILE> NEWSFILE { get; set; }
+        public DbSet<HDYH_OPTION> HDYH_OPTION { get; set; }
+        public DbSet<STARTUP_OPTION> STARTUP_OPTION { get; set; }
+        public DbSet<TEAM> TEAM { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
