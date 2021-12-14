@@ -204,19 +204,19 @@ namespace WorkMotion_WebAPI.Controllers
             }
         }
 
-        [HttpDelete("DeleteDataBanner")]
-        public async Task<IActionResult> DeleteDataBanner(int? Banner_ID)
+        [HttpDelete("DeleteDataPortfolio")]
+        public async Task<IActionResult> DeleteDataPortfolio(int? Portfolio_ID)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    if (Banner_ID != null)
+                    if (Portfolio_ID != null)
                     {
-                        var dataBanner = _dbContext.BANNER.Where(x => x.Banner_ID == Banner_ID).FirstOrDefault();
-                        if (dataBanner != null)
+                        var dataPortfolio = _dbContext.PORTFOLIO.Where(x => x.Portfolio_ID == Portfolio_ID).FirstOrDefault();
+                        if (dataPortfolio != null)
                         {
-                            dataBanner.ActiveFlag = false;
+                            dataPortfolio.ActiveFlag = false;
                             _dbContext.SaveChanges();
                             return Ok(new ResponseModel { Message = Message.Success, Status = APIStatus.Successful });
                         }
@@ -229,33 +229,5 @@ namespace WorkMotion_WebAPI.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
-
-        [HttpPut("SetDisplayBanner")]
-        public async Task<IActionResult> SetDisplayBanner(int? Banner_ID)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    if (Banner_ID != null)
-                    {
-                        var dataBanner = _dbContext.BANNER.Where(x => x.Banner_ID == Banner_ID).FirstOrDefault();
-                        if (dataBanner != null)
-                        {
-                            dataBanner.Is_Display = !dataBanner.Is_Display;
-                            dataBanner.UpdateDate = DateTime.Now;
-                            _dbContext.SaveChanges();
-                            return Ok(new ResponseModel { Message = Message.Success, Status = APIStatus.Successful });
-                        }
-                    }
-                }
-                return Ok(new ResponseModel { Message = Message.SystemError, Status = APIStatus.SystemError });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
-        }
-
     }
 }

@@ -8,6 +8,8 @@ using static WorkMotion_WebAPI.Model.MenuModel;
 using static WorkMotion_WebAPI.Model.PortfolioModel;
 using static WorkMotion_WebAPI.Model.IndustriesModel;
 using static WorkMotion_WebAPI.Model.CategoriesModel;
+using static WorkMotion_WebAPI.Model.NewsModel;
+using static WorkMotion_WebAPI.Model.NewsFileModel;
 
 namespace WorkMotion_WebAPI.BaseModel
 {
@@ -19,6 +21,8 @@ namespace WorkMotion_WebAPI.BaseModel
         public DbSet<PORTFOLIO> PORTFOLIO { get; set; }
         public DbSet<INDUSTRIES> INDUSTRIES { get; set; }
         public DbSet<CATEGORIES> CATEGORIES { get; set; }
+        public DbSet<NEWS> NEWS { get; set; }
+        public DbSet<NEWSFILE> NEWSFILE { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
