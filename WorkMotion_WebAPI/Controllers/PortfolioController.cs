@@ -11,6 +11,7 @@ using System.IO;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Hosting;
 using static WorkMotion_WebAPI.Model.PortfolioModel;
+using static WorkMotion_WebAPI.Model.LogModel;
 
 namespace WorkMotion_WebAPI.Controllers
 {
@@ -152,12 +153,16 @@ namespace WorkMotion_WebAPI.Controllers
         [HttpPost("UpdateDataPortfolio")]
         public async Task<IActionResult> UpdateDataPortfolio(Request_Portfolio request)
         {
+            var log = new LOG();
+            string Function_Detail = "";
             try
             {
                 if (ModelState.IsValid)
                 {
+                    Function_Detail += JsonConvert.SerializeObject(request);
                     if (request.Portfolio_ID == null)
                     {
+                        log.Function_Name = "Insert |UpdateDataPortfolio";
                         PORTFOLIO newPortfolio = new PORTFOLIO();
                         newPortfolio.FK_Industries_ID = request.FK_Industries_ID;
                         newPortfolio.Portfolio_Section = request.Portfolio_Section;
@@ -169,17 +174,17 @@ namespace WorkMotion_WebAPI.Controllers
                         newPortfolio.Portfolio_Contact_Website = request.Portfolio_Contact_Website;
                         newPortfolio.Portfolio_Contact_LinkedIn = request.Portfolio_Contact_LinkedIn;
                         newPortfolio.ActiveFlag = true;
+                        newPortfolio.CreateBy = request.CreateBy;
                         newPortfolio.CreateDate = DateTime.Now;
                         _dbContext.PORTFOLIO.Add(newPortfolio);
                         _dbContext.SaveChanges();
-
-                        return Ok(new ResponseModel { Message = Message.Success, Status = APIStatus.Successful });
                     }
                     else
                     {
                         var dataPortfolio = _dbContext.PORTFOLIO.Where(x => x.Portfolio_ID == request.Portfolio_ID).FirstOrDefault();
                         if (dataPortfolio != null)
                         {
+                            log.Function_Name = "Insert |UpdateDataPortfolio";
                             dataPortfolio.FK_Industries_ID = request.FK_Industries_ID;
                             dataPortfolio.Portfolio_Section = request.Portfolio_Section;
                             dataPortfolio.Portfolio_Name = request.Portfolio_Name;
@@ -189,24 +194,41 @@ namespace WorkMotion_WebAPI.Controllers
                             dataPortfolio.Portfolio_Location = request.Portfolio_Location;
                             dataPortfolio.Portfolio_Contact_Website = request.Portfolio_Contact_Website;
                             dataPortfolio.Portfolio_Contact_LinkedIn = request.Portfolio_Contact_LinkedIn;
+                            dataPortfolio.UpdateBy = request.CreateBy;
                             dataPortfolio.UpdateDate = DateTime.Now;
                             _dbContext.SaveChanges();
-                            return Ok(new ResponseModel { Message = Message.Success, Status = APIStatus.Successful });
                         }
-                        return Ok(new ResponseModel { Message = Message.SystemError, Status = APIStatus.SystemError });
                     }
+
+                    log.IP_Address = request.CreateBy;
+                    log.Function_Detail = Function_Detail;
+                    log.Log_Date = DateTime.Now;
+                    _dbContext.LOG.Add(log);
+                    _dbContext.SaveChanges();
+
+                    return Ok(new ResponseModel { Message = Message.Success, Status = APIStatus.Successful });
                 }
                 return Ok(new ResponseModel { Message = Message.SystemError, Status = APIStatus.SystemError });
             }
             catch (Exception ex)
             {
+                log.Function_Name = "Exception |UpdateDataBanner";
+                log.Function_Detail = Function_Detail;
+                log.IP_Address = request.CreateBy;
+                log.Error_Detail = ex.Message;
+                log.Log_Date = DateTime.Now;
+                _dbContext.LOG.Add(log);
+                _dbContext.SaveChanges();
+
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
 
         [HttpDelete("DeleteDataPortfolio")]
-        public async Task<IActionResult> DeleteDataPortfolio(int? Portfolio_ID)
+        public async Task<IActionResult> DeleteDataPortfolio(int? Portfolio_ID, string CreateBy)
         {
+            var log = new LOG();
+            string Function_Detail = "";
             try
             {
                 if (ModelState.IsValid)
@@ -217,7 +239,18 @@ namespace WorkMotion_WebAPI.Controllers
                         if (dataPortfolio != null)
                         {
                             dataPortfolio.ActiveFlag = false;
+                            dataPortfolio.UpdateBy = CreateBy;
+                            dataPortfolio.UpdateDate = DateTime.Now;
                             _dbContext.SaveChanges();
+
+                            Function_Detail += "Portfolio_ID: " + Portfolio_ID;
+                            log.Function_Name = "DeleteDataPortfolio";
+                            log.IP_Address = CreateBy;
+                            log.Function_Detail = Function_Detail;
+                            log.Log_Date = DateTime.Now;
+                            _dbContext.LOG.Add(log);
+                            _dbContext.SaveChanges();
+
                             return Ok(new ResponseModel { Message = Message.Success, Status = APIStatus.Successful });
                         }
                     }
@@ -226,7 +259,37 @@ namespace WorkMotion_WebAPI.Controllers
             }
             catch (Exception ex)
             {
+                log.Function_Name = "Exception |DeleteDataPortfolio";
+                log.IP_Address = CreateBy;
+                log.Error_Detail = ex.Message;
+                log.Log_Date = DateTime.Now;
+                _dbContext.LOG.Add(log);
+                _dbContext.SaveChanges();
+
                 return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
+
+        [HttpGet("GetDataSEOPortfolio")]
+        public async Task<IActionResult> GetDataSEOPortfolio()
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var GetDataMenuBanner = _dbContext.MENU.Where(x => x.Menu_ID == 2).ToList();
+
+                    if (GetDataMenuBanner != null)
+                    {
+                        return Ok(new ResponseModel { Message = Message.Success, Status = APIStatus.Successful, Data = GetDataMenuBanner });
+                    }
+                    return Ok(new ResponseModel { Message = Message.Failed, Status = APIStatus.Error, Data = null });
+                }
+                return Ok(new ResponseModel { Message = Message.InvalidPostedData, Status = APIStatus.SystemError });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
     }

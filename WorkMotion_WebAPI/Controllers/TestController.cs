@@ -39,21 +39,6 @@ namespace WorkMotion_WebAPI.Controllers
             }
         }
 
-        [HttpPost("ConnectMSSQL")]
-        public async Task<IActionResult> ConnectMSSQL()
-        {
-            try
-            {
-                var test = _dbContext.BANNER.ToList();
-
-                return Ok(new ResponseModel { Message = Message.Successfully, Status = APIStatus.Successful, Data = test });
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
         [HttpPost("TestSendMail")]
         public bool TestSendMail(string SendTo, string SendFrom, string settingsmtp, int portsmtp)
         {

@@ -24,6 +24,7 @@ namespace WorkMotion_WebAPI.Model
         {
             public int? Startup_Option_ID { get; set; }
             public string Startup_Option_Name { get; set; }
+            public string CreateBy { get; set; }
         }
     }
 }

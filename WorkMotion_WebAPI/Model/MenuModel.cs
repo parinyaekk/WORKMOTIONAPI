@@ -16,6 +16,12 @@ namespace WorkMotion_WebAPI.Model
             public string Meta_Title { get; set; }
             public string Meta_Keyword { get; set; }
             public string Meta_Description { get; set; }
+            public bool? ActiveFlag { get; set; }
+            public string CreateBy { get; set; }
+            public DateTime? CreateDate { get; set; }
+            public string UpdateBy { get; set; }
+            public DateTime? UpdateDate { get; set; }
+
         }
 
         public class Request_Menu
@@ -25,6 +31,7 @@ namespace WorkMotion_WebAPI.Model
             public string Meta_Title { get; set; }
             public string Meta_Keyword { get; set; }
             public string Meta_Description { get; set; }
+            public string CreateBy { get; set; }
         }
     }
 }

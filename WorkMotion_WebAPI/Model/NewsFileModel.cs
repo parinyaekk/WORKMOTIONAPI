@@ -31,7 +31,7 @@ namespace WorkMotion_WebAPI.Model
             public string News_File_Type { get; set; }
             public string News_File_Name { get; set; }
             public bool? ActiveFlag { get; set; }
-
+            public string CreateBy { get; set; }
         }
     }
 }

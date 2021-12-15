@@ -14,6 +14,21 @@ namespace WorkMotion_WebAPI.Model
             public int Industries_ID { get; set; }
             public string Industries_Name { get; set; }
             public string Industries_Description { get; set; }
+            public bool? ActiveFlag { get; set; }
+            public string CreateBy { get; set; }
+            public DateTime? CreateDate { get; set; }
+            public string UpdateBy { get; set; }
+            public DateTime? UpdateDate { get; set; }
+
+        }
+
+        public class Request_Industries
+        {
+            public int? Industries_ID { get; set; }
+            public string Industries_Name { get; set; }
+            public string Industries_Description { get; set; }
+            public bool? ActiveFlag { get; set; }
+            public string CreateBy { get; set; }
         }
     }
 }

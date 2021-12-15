@@ -31,6 +31,7 @@ namespace WorkMotion_WebAPI.Model
             public string Banner_Topic { get; set; }
             public string Banner_Description { get; set; }
             public string Banner_Image_Path { get; set; }
+            public string CreateBy { get; set; }
         }
     }
 }

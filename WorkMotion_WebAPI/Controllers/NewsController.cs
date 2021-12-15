@@ -14,6 +14,7 @@ using static WorkMotion_WebAPI.Model.NewsModel;
 using System.Collections.Generic;
 using static WorkMotion_WebAPI.Model.NewsFileModel;
 using Microsoft.AspNetCore.Http;
+using static WorkMotion_WebAPI.Model.LogModel;
 
 namespace WorkMotion_WebAPI.Controllers
 {
@@ -68,8 +69,10 @@ namespace WorkMotion_WebAPI.Controllers
         }
 
         [HttpDelete("DeleteDataNews")]
-        public async Task<IActionResult> DeleteDataNews(int? News_ID)
+        public async Task<IActionResult> DeleteDataNews(int? News_ID, string CreateBy)
         {
+            var log = new LOG();
+            string Function_Detail = "";
             try
             {
                 if (ModelState.IsValid)
@@ -80,7 +83,18 @@ namespace WorkMotion_WebAPI.Controllers
                         if (dataNews != null)
                         {
                             dataNews.ActiveFlag = false;
+                            dataNews.UpdateBy = CreateBy;
+                            dataNews.UpdateDate = DateTime.Now;
                             _dbContext.SaveChanges();
+
+                            Function_Detail += "News_ID: " + News_ID;
+                            log.Function_Name = "DeleteDataNews";
+                            log.IP_Address = CreateBy;
+                            log.Function_Detail = Function_Detail;
+                            log.Log_Date = DateTime.Now;
+                            _dbContext.LOG.Add(log);
+                            _dbContext.SaveChanges();
+
                             return Ok(new ResponseModel { Message = Message.Success, Status = APIStatus.Successful });
                         }
                     }
@@ -89,13 +103,23 @@ namespace WorkMotion_WebAPI.Controllers
             }
             catch (Exception ex)
             {
+                log.Function_Name = "Exception |DeleteDataNews";
+                log.IP_Address = CreateBy;
+                log.Function_Detail = Function_Detail;
+                log.Error_Detail = ex.Message;
+                log.Log_Date = DateTime.Now;
+                _dbContext.LOG.Add(log);
+                _dbContext.SaveChanges();
+
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
 
         [HttpPut("SetDisplayNews")]
-        public async Task<IActionResult> SetDisplayNews(int? News_ID)
+        public async Task<IActionResult> SetDisplayNews(int? News_ID, string CreateBy)
         {
+            var log = new LOG();
+            string Function_Detail = "";
             try
             {
                 if (ModelState.IsValid)
@@ -106,8 +130,18 @@ namespace WorkMotion_WebAPI.Controllers
                         if (dataNews != null)
                         {
                             dataNews.Is_Display = !dataNews.Is_Display;
+                            dataNews.UpdateBy = CreateBy;
                             dataNews.UpdateDate = DateTime.Now;
                             _dbContext.SaveChanges();
+
+                            Function_Detail += "News_ID: " + News_ID;
+                            log.Function_Name = "SetDisplayNews";
+                            log.IP_Address = CreateBy;
+                            log.Function_Detail = Function_Detail;
+                            log.Log_Date = DateTime.Now;
+                            _dbContext.LOG.Add(log);
+                            _dbContext.SaveChanges();
+
                             return Ok(new ResponseModel { Message = Message.Success, Status = APIStatus.Successful });
                         }
                     }
@@ -116,20 +150,30 @@ namespace WorkMotion_WebAPI.Controllers
             }
             catch (Exception ex)
             {
+                log.Function_Name = "Exception |SetDisplayNews";
+                log.IP_Address = CreateBy;
+                log.Function_Detail = Function_Detail;
+                log.Error_Detail = ex.Message;
+                log.Log_Date = DateTime.Now;
+                _dbContext.LOG.Add(log);
+                _dbContext.SaveChanges();
+
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
-
         public string getpath { get; set; }
-
 
         [HttpPost("UpdateDataNews")]
         public async Task<IActionResult> UpdateDataNews()
         {
+            var log = new LOG();
+            string Function_Detail = "";
+            string CreateBy = "";
             try
             {
                 if (ModelState.IsValid)
                 {
+                    Function_Detail += JsonConvert.SerializeObject(Request.Form["datas"]);
                     dynamic jsonData = JsonConvert.DeserializeObject(Request.Form["datas"]);
                     Request_News request = new Request_News();
                     request.News_ID = jsonData["News_ID"];
@@ -139,11 +183,15 @@ namespace WorkMotion_WebAPI.Controllers
                     request.News_Author = jsonData["News_Author"];
                     request.News_Publish_Date = jsonData["News_Publish_Date"];
                     request.News_Tags = jsonData["News_Tags"];
+                    request.CreateBy = jsonData["CreateBy"];
                     request.Is_Display = true;
+
+                    CreateBy = request.CreateBy;
 
                     var FindDataNews = _dbContext.NEWS.Where(x => x.News_ID == request.News_ID && x.ActiveFlag == true).FirstOrDefault();
                     if (FindDataNews != null)
                     {
+                        log.Function_Name = "Update |UpdateDataNews";
                         FindDataNews.News_Title = jsonData["News_Title"];
                         FindDataNews.News_Content = jsonData["News_Content"];
                         FindDataNews.News_Main_Image_Path = jsonData["News_Main_Image_Path"];
@@ -151,6 +199,7 @@ namespace WorkMotion_WebAPI.Controllers
                         FindDataNews.News_Publish_Date = jsonData["News_Publish_Date"];
                         FindDataNews.News_Tags = jsonData["News_Tags"];
                         FindDataNews.Is_Display = true;
+                        FindDataNews.UpdateBy = request.CreateBy;
                         FindDataNews.UpdateDate = DateTime.Now;
                         _dbContext.NEWS.Update(FindDataNews);
                         _dbContext.SaveChanges();
@@ -161,6 +210,7 @@ namespace WorkMotion_WebAPI.Controllers
                         foreach (var item in FileClose)
                         {
                             item.ActiveFlag = false;
+                            item.UpdateBy = request.CreateBy;
                             item.UpdateDate = DateTime.Now;
                             _dbContext.NEWSFILE.Update(item);
                             _dbContext.SaveChanges();
@@ -172,6 +222,7 @@ namespace WorkMotion_WebAPI.Controllers
                             if (TempFile != null)
                             {
                                 TempFile.ActiveFlag = true;
+                                TempFile.UpdateBy = request.CreateBy;
                                 TempFile.UpdateDate = DateTime.Now;
                                 _dbContext.NEWSFILE.Update(TempFile);
                                 _dbContext.SaveChanges();
@@ -189,17 +240,16 @@ namespace WorkMotion_WebAPI.Controllers
                                 NewsFile.News_File_Name = Convert.ToString(File.FileName);
                                 NewsFile.News_File_Path = Convert.ToString(getpath);
                                 NewsFile.ActiveFlag = true;
+                                NewsFile.CreateBy = request.CreateBy;
                                 NewsFile.CreateDate = DateTime.Now;
-                                NewsFile.UpdateDate = DateTime.Now;
                                 _dbContext.NEWSFILE.Add(NewsFile);
                                 _dbContext.SaveChanges();
                             }
                         }
-
-                        return Ok(new ResponseModel { Message = Message.UpdateSuccess, Status = APIStatus.Successful });
                     }
                     else
                     {
+                        log.Function_Name = "Insert |UpdateDataNews";
                         NEWS AddDataNews = new NEWS();
                         AddDataNews.News_Title = jsonData["News_Title"];
                         AddDataNews.News_Content = jsonData["News_Content"];
@@ -209,6 +259,7 @@ namespace WorkMotion_WebAPI.Controllers
                         AddDataNews.News_Tags = jsonData["News_Tags"];
                         AddDataNews.Is_Display = true;
                         AddDataNews.ActiveFlag = true;
+                        AddDataNews.CreateBy = request.CreateBy;
                         AddDataNews.CreateDate = DateTime.Now;
                         _dbContext.NEWS.Add(AddDataNews);
                         _dbContext.SaveChanges();
@@ -219,6 +270,7 @@ namespace WorkMotion_WebAPI.Controllers
                         foreach (var item in FileClose)
                         {
                             item.ActiveFlag = false;
+                            item.UpdateBy = request.CreateBy;
                             item.UpdateDate = DateTime.Now;
                             _dbContext.NEWSFILE.Update(item);
                             _dbContext.SaveChanges();
@@ -227,10 +279,14 @@ namespace WorkMotion_WebAPI.Controllers
                         foreach (var FileOpen in OldFile)
                         {
                             var TempFile = FileClose.Where(x => x.News_File_ID == FileOpen.id).FirstOrDefault();
-                            TempFile.ActiveFlag = true;
-                            TempFile.UpdateDate = DateTime.Now;
-                            _dbContext.NEWSFILE.Update(TempFile);
-                            _dbContext.SaveChanges();
+                            if (TempFile != null)
+                            {
+                                TempFile.ActiveFlag = true;
+                                TempFile.UpdateBy = request.CreateBy;
+                                TempFile.UpdateDate = DateTime.Now;
+                                _dbContext.NEWSFILE.Update(TempFile);
+                                _dbContext.SaveChanges();
+                            }
                         }
 
                         if (Request.Form.Files.Count() > 0)
@@ -244,20 +300,33 @@ namespace WorkMotion_WebAPI.Controllers
                                 NewsFile.News_File_Name = Convert.ToString(File.FileName);
                                 NewsFile.News_File_Path = Convert.ToString(getpath);
                                 NewsFile.ActiveFlag = true;
+                                NewsFile.CreateBy = request.CreateBy;
                                 NewsFile.CreateDate = DateTime.Now;
-                                NewsFile.UpdateDate = DateTime.Now;
                                 _dbContext.NEWSFILE.Add(NewsFile);
                                 _dbContext.SaveChanges();
                             }
                         }
-
-                        return Ok(new ResponseModel { Message = Message.UpdateSuccess, Status = APIStatus.Successful });
                     }
+                    log.IP_Address = request.CreateBy;
+                    log.Function_Detail = Function_Detail;
+                    log.Log_Date = DateTime.Now;
+                    _dbContext.LOG.Add(log);
+                    _dbContext.SaveChanges();
+
+                    return Ok(new ResponseModel { Message = Message.Successfully, Status = APIStatus.Successful });
                 }
                 return Ok(new ResponseModel { Message = Message.SystemError, Status = APIStatus.SystemError });
             }
             catch (Exception ex)
             {
+                log.Function_Name = "Exception |UpdateDataNews";
+                log.IP_Address = CreateBy;
+                log.Function_Detail = Function_Detail;
+                log.Error_Detail = ex.Message;
+                log.Log_Date = DateTime.Now;
+                _dbContext.LOG.Add(log);
+                _dbContext.SaveChanges();
+
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
@@ -308,6 +377,27 @@ namespace WorkMotion_WebAPI.Controllers
             }
         }
 
+        [HttpGet("GetDataSEONews")]
+        public async Task<IActionResult> GetDataSEONews()
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var GetDataMenuBanner = _dbContext.MENU.Where(x => x.Menu_ID == 4).ToList();
 
+                    if (GetDataMenuBanner != null)
+                    {
+                        return Ok(new ResponseModel { Message = Message.Success, Status = APIStatus.Successful, Data = GetDataMenuBanner });
+                    }
+                    return Ok(new ResponseModel { Message = Message.Failed, Status = APIStatus.Error, Data = null });
+                }
+                return Ok(new ResponseModel { Message = Message.InvalidPostedData, Status = APIStatus.SystemError });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

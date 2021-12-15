@@ -12,8 +12,10 @@ namespace WorkMotion_WebAPI.Model
         {
             [Key]
             public int Team_ID { get; set; }
+            public int? Team_Sequence { get; set; }
             public string Team_Name { get; set; }
             public string Team_Image_Path { get; set; }
+            public string Team_Image_Hover_Path { get; set; }
             public string Team_Position { get; set; }
             public string Team_Personal_Story { get; set; }
             public string Team_Education { get; set; }
@@ -29,13 +31,16 @@ namespace WorkMotion_WebAPI.Model
         public class Request_Team
         {
             public int? Team_ID { get; set; }
+            public int? Team_Sequence { get; set; }
             public string Team_Name { get; set; }
             public string Team_Image_Path { get; set; }
+            public string Team_Image_Hover_Path { get; set; }
             public string Team_Position { get; set; }
             public string Team_Personal_Story { get; set; }
             public string Team_Education { get; set; }
             public string Team_Interest { get; set; }
             public string Team_Contact_Channels { get; set; }
+            public string CreateBy { get; set; }
         }
     }
 }

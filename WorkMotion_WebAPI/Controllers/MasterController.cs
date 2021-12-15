@@ -11,6 +11,8 @@ using System.IO;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Hosting;
 using static WorkMotion_WebAPI.Model.BannerModel;
+using static WorkMotion_WebAPI.Model.MenuModel;
+using static WorkMotion_WebAPI.Model.LogModel;
 
 namespace WorkMotion_WebAPI.Controllers
 {
@@ -88,5 +90,50 @@ namespace WorkMotion_WebAPI.Controllers
             }
         }
 
+        [HttpPut("UpdateDataSEOMenu")]
+        public async Task<IActionResult> UpdateDataSEOMenu(Request_Menu request)
+        {
+            var log = new LOG();
+            string Function_Detail = "";
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Function_Detail += JsonConvert.SerializeObject(request);
+                    var dataMenuBanner = _dbContext.MENU.Where(x => x.Menu_ID == request.Menu_ID).FirstOrDefault();
+                    if (dataMenuBanner != null)
+                    {
+                        log.Function_Name = "Update |UpdateDataSEOMenu";
+                        dataMenuBanner.Meta_Title = request.Meta_Title;
+                        dataMenuBanner.Meta_Keyword = request.Meta_Keyword;
+                        dataMenuBanner.Meta_Description = request.Meta_Description;
+                        dataMenuBanner.UpdateBy = request.CreateBy;
+                        dataMenuBanner.UpdateDate = DateTime.Now;
+                        _dbContext.SaveChanges();
+
+                        log.IP_Address = request.CreateBy;
+                        log.Function_Detail = Function_Detail;
+                        log.Log_Date = DateTime.Now;
+                        _dbContext.LOG.Add(log);
+                        _dbContext.SaveChanges();
+
+                        return Ok(new ResponseModel { Message = Message.Success, Status = APIStatus.Successful });
+                    }
+                    return Ok(new ResponseModel { Message = Message.SystemError, Status = APIStatus.SystemError });
+                }
+                return Ok(new ResponseModel { Message = Message.SystemError, Status = APIStatus.SystemError });
+            }
+            catch (Exception ex)
+            {
+                log.Function_Name = "Exception |UpdateDataSEOMenu";
+                log.IP_Address = request.CreateBy;
+                log.Error_Detail = ex.Message;
+                log.Log_Date = DateTime.Now;
+                _dbContext.LOG.Add(log);
+                _dbContext.SaveChanges();
+
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
     }
 }

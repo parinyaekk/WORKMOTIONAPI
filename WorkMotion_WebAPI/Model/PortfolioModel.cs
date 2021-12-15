@@ -40,6 +40,7 @@ namespace WorkMotion_WebAPI.Model
             public string Portfolio_Location { get; set; }
             public string Portfolio_Contact_Website { get; set; }
             public string Portfolio_Contact_LinkedIn { get; set; }
+            public string CreateBy { get; set; }
         }
     }
 }

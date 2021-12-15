@@ -24,6 +24,7 @@ namespace WorkMotion_WebAPI.Model
         {
             public int? HDYH_Option_ID { get; set; }
             public string HDYH_Option_Name { get; set; }
+            public string CreateBy { get; set; }
         }
     }
 }
