@@ -18,7 +18,7 @@ using static WorkMotion_WebAPI.Model.LogModel;
 
 namespace WorkMotion_WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("API/[controller]")]
     [ApiController]
     public class NewsController : ControllerBase
     {
@@ -161,7 +161,6 @@ namespace WorkMotion_WebAPI.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
-        public string getpath { get; set; }
 
         [HttpPost("UpdateDataNews")]
         public async Task<IActionResult> UpdateDataNews()
@@ -331,6 +330,7 @@ namespace WorkMotion_WebAPI.Controllers
             }
         }
 
+        public string getpath { get; set; }
         [HttpPost("UploadFile"), DisableRequestSizeLimit]
         public async Task<IActionResult> UploadFile(IFormFile File)
         {

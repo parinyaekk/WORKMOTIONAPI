@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace WorkMotion_WebAPI.Model
 {
-    public class CategoriesModel
+    public class Categories_OptionModel
     {
-        public class CATEGORIES
+        public class CATEGORIES_OPTION
         {
             [Key]
             public int Categories_ID { get; set; }

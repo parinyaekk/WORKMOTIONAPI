@@ -16,7 +16,7 @@ using static WorkMotion_WebAPI.Model.LogModel;
 
 namespace WorkMotion_WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("API/[controller]")]
     [ApiController]
     public class MasterController : ControllerBase
     {
@@ -50,7 +50,6 @@ namespace WorkMotion_WebAPI.Controllers
                 throw ex;
             }
         }
-
 
         [HttpPost("UploadImage"), DisableRequestSizeLimit]
         public async Task<IActionResult> UploadImage()

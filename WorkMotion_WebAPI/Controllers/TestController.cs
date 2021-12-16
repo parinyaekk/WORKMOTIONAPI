@@ -16,7 +16,7 @@ using static WorkMotion_WebAPI.Model.BaseModel;
 
 namespace WorkMotion_WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("API/[controller]")]
     [ApiController]
     public class TestController : ControllerBase
     {
