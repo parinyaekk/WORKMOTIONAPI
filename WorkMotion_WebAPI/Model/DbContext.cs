@@ -27,7 +27,7 @@ namespace WorkMotion_WebAPI.BaseModel
         public DbSet<MENU> MENU { get; set; }
         public DbSet<PORTFOLIO> PORTFOLIO { get; set; }
         public DbSet<INDUSTRIES> INDUSTRIES { get; set; }
-        public DbSet<CATEGORIES_OPTION> CATEGORIES_OPTION { get; set; }
+        public DbSet<CATEGORIES> CATEGORIES { get; set; }
         public DbSet<NEWS> NEWS { get; set; }
         public DbSet<NEWSFILE> NEWSFILE { get; set; }
         public DbSet<HDYH_OPTION> HDYH_OPTION { get; set; }

@@ -159,7 +159,7 @@ namespace WorkMotion_WebAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var results = _dbContext.CATEGORIES_OPTION.Where(x => x.FK_Industries_ID == IndustyID && x.ActiveFlag == true).OrderBy(x => x.Group_Number).ToList();
+                    var results = _dbContext.CATEGORIES.Where(x => x.FK_Industries_ID == IndustyID && x.ActiveFlag == true).OrderBy(x => x.FK_Industries_ID).ThenBy(x => x.Group_Number).ThenByDescending(x => x.Is_TopGroup).ToList();
 
                     if (results != null)
                     {

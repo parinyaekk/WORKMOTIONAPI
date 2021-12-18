@@ -8,18 +8,28 @@ namespace WorkMotion_WebAPI.Model
 {
     public class Categories_OptionModel
     {
-        public class CATEGORIES_OPTION
+        public class CATEGORIES
         {
             [Key]
             public int Categories_ID { get; set; }
             public int FK_Industries_ID { get; set; }
             public int? Group_Number { get; set; }
             public string Categories_Name { get; set; }
+            public bool? Is_TopGroup { get; set; }
             public bool? ActiveFlag { get; set; }
             public string CreateBy { get; set; }
             public DateTime? CreateDate { get; set; }
             public string UpdateBy { get; set; }
             public DateTime? UpdateDate { get; set; }
+        }
+        public class request_Categories
+        {
+            public int? Categories_ID { get; set; }
+            public int FK_Industries_ID { get; set; }
+            public int? Group_Number { get; set; }
+            public string Categories_Name { get; set; }
+            public bool? Is_TopGroup { get; set; }
+            public string CreateBy { get; set; }
         }
     }
 }
