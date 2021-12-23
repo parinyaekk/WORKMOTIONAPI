@@ -17,6 +17,9 @@ using static WorkMotion_WebAPI.Model.HDYH_OptionModel;
 using static WorkMotion_WebAPI.Model.IndustriesModel;
 using static WorkMotion_WebAPI.Model.Startup_OptionModel;
 using static WorkMotion_WebAPI.Model.Categories_OptionModel;
+using ClosedXML.Excel;
+using static WorkMotion_WebAPI.Model.InformationModel;
+using System.Collections.Generic;
 
 namespace WorkMotion_WebAPI.Controllers
 {
@@ -602,6 +605,78 @@ namespace WorkMotion_WebAPI.Controllers
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        [HttpPost("ExportExcelDataInformation")]
+        public async Task<IActionResult> ExportExcelDataInformation()
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var results = _dbContext.INFORMATION.Where(x => x.ActiveFlag == true).OrderByDescending(x => x.Information_ID).ToList();
+
+                    string ResultBase64 = "";
+                    try
+                    {
+                        string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                        string fileName = string.Concat(string.Format("{0:yyyyMMddHHmm}", DateTime.Now), "_DataTellUsMore", ".xlsx");
+
+                        using (var workbook = new XLWorkbook())
+                        {
+                            var worksheet = workbook.Worksheets.Add("DataTellUsMore");
+                            var currentRow = 1;
+                            //Header
+                            worksheet.Cell(currentRow, 1).Value = "Data Tell Us More";
+                            worksheet.Cell(1, 1).Style.Font.Bold = true;
+                            worksheet.Cell(1, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                            int index = 1;
+                            var lst = new List<Export_INFORMATION>();
+                            foreach (var re in results)
+                            {
+                                lst.Add(new Export_INFORMATION()
+                                {
+                                    SEQ = index++,
+                                    Information_Categories_Text = re.Information_Categories_Text,
+                                    Information_Industries_Text = re.Information_Industries_Text,
+                                    Information_HDYH_Text = re.Information_HDYH_Text,
+                                    Information_HDYH_Other = re.Information_HDYH_Other,
+                                    Information_Looking_For = re.Information_Looking_For,
+                                    Information_Looking_For_Other = re.Information_Looking_For_Other,
+                                    Information_Startup_Option_Text = re.Information_Startup_Option_Text,
+                                    Information_Company_Name = re.Information_Company_Name,
+                                    Information_Email = re.Information_Email,
+                                    Information_Profile =re.Information_Profile,
+                                    Information_Detail = re.Information_Detail,
+                                    Information_Country_Name = re.Information_Country_Name,
+                                });
+                            }
+
+                            var tableWithData = worksheet.Cell(3, 1).InsertTable(lst.AsEnumerable());
+
+                            using (var stream = new MemoryStream())
+                            {
+                                worksheet.Columns().AdjustToContents();
+                                workbook.SaveAs(stream);
+                                var content = stream.ToArray();
+                                ResultBase64 = Convert.ToBase64String(stream.ToArray());
+
+                                return File(content, contentType, fileName);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        return Ok(new ResponseModel { Message = ex.Message, Status = APIStatus.SystemError });
+                    }
+                }
+                return Ok(new ResponseModel { Message = Message.InvalidPostedData, Status = APIStatus.SystemError });
+            }
+            catch (Exception ex)
+            {
+                //throw ex;
+                return Ok(new ResponseModel { Message = ex.Message, Status = APIStatus.SystemError });
             }
         }
 

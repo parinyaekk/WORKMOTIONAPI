@@ -61,5 +61,22 @@ namespace WorkMotion_WebAPI.Model
             public int id { get; set; }
             public string name { get; set; }
         }
+        public class Export_INFORMATION
+        {
+            public int? SEQ { get; set; }
+            public string Information_Startup_Option_Text { get; set; }
+            public string Information_Industries_Text { get; set; }
+            public string Information_Categories_Text { get; set; }
+            public string Information_HDYH_Text { get; set; }
+            public string Information_HDYH_Other { get; set; }
+            public string Information_Company_Name { get; set; }
+            public string Information_Email { get; set; }
+            public string Information_Country_Name { get; set; }
+            public string Information_Profile { get; set; }
+            public string Information_Detail { get; set; }
+            public string Information_Looking_For { get; set; }
+            public string Information_Looking_For_Other { get; set; }
+        }
+
     }
 }

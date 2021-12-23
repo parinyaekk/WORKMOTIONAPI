@@ -56,7 +56,11 @@ namespace WorkMotion_WebAPI
 
             app.UseCors(builder =>
             {
-                builder.WithOrigins("http://localhost:3000");
+                builder.WithOrigins(new string[]
+                {
+                    "http://localhost:3000",
+                    "http://localhost:3001",
+                });
                 builder.AllowAnyHeader();
                 builder.WithExposedHeaders("Token-Expired");
                 builder.AllowAnyMethod();
