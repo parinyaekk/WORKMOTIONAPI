@@ -54,19 +54,23 @@ namespace WorkMotion_WebAPI
 
             app.UseRouting();
 
-            app.UseCors(builder =>
-            {
-                builder.WithOrigins(new string[]
-                {
-                    "http://localhost:3000",
-                    "http://localhost:3001",
-                });
-                builder.AllowAnyHeader();
-                builder.WithExposedHeaders("Token-Expired");
-                builder.AllowAnyMethod();
-                builder.AllowCredentials();
-                builder.Build();
-            });
+            //app.UseCors(builder =>
+            //{
+            //    builder.WithOrigins(new string[]
+            //    {
+            //        "http://localhost:3000",
+            //        "http://localhost:3001",
+            //        "https://topventure-api.myip.in.th/",
+            //        "https://topventure.myip.in.th/",
+            //    });
+            //    builder.AllowAnyHeader();
+            //    builder.WithExposedHeaders("Token-Expired");
+            //    builder.AllowAnyMethod();
+            //    builder.AllowCredentials();
+            //    builder.Build();
+            //});
+
+            app.UseCors("AllowAll");
 
             app.UseAuthorization();
 
@@ -75,30 +79,14 @@ namespace WorkMotion_WebAPI
                 endpoints.MapControllers();
             });
 
-            bool chkdeploy = string.IsNullOrEmpty(Configuration.GetValue<string>("deploy")) ? false : Convert.ToBoolean(Configuration.GetValue<string>("deploy"));
-            if (!chkdeploy)
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
             {
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1.0/swagger.json", "Versioned API v1.0");
-                    c.DocumentTitle = "API Documentation";
-                    c.DocExpansion(DocExpansion.List);
+                c.SwaggerEndpoint("/swagger/v1.0/swagger.json", "Versioned API v1.0");
+                c.DocumentTitle = "API Documentation";
+                c.DocExpansion(DocExpansion.List);
 
-                });
-            }
-            else
-            {
-                //forUAT
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/API/swagger/v1.0/swagger.json", "Versioned API v1.0");
-                    c.DocumentTitle = "API Documentation";
-                    c.DocExpansion(DocExpansion.List);
-                });
-
-            }
+            });
         }
     }
 }
