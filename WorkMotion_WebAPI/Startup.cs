@@ -54,23 +54,23 @@ namespace WorkMotion_WebAPI
 
             app.UseRouting();
 
-            //app.UseCors(builder =>
-            //{
-            //    builder.WithOrigins(new string[]
-            //    {
-            //        "http://localhost:3000",
-            //        "http://localhost:3001",
-            //        "https://topventure-api.myip.in.th/",
-            //        "https://topventure.myip.in.th/",
-            //    });
-            //    builder.AllowAnyHeader();
-            //    builder.WithExposedHeaders("Token-Expired");
-            //    builder.AllowAnyMethod();
-            //    builder.AllowCredentials();
-            //    builder.Build();
-            //});
+            app.UseCors(builder =>
+            {
+                builder.WithOrigins(new string[]
+                {
+                    "http://localhost:3000",
+                    "http://localhost:3001",
+                    "https://topventure-api.myip.in.th/",
+                    "https://topventure.myip.in.th/",
+                });
+                builder.AllowAnyHeader();
+                builder.WithExposedHeaders("Token-Expired");
+                builder.AllowAnyMethod();
+                builder.AllowCredentials();
+                builder.Build();
+            });
 
-            app.UseCors("AllowAll");
+            //app.UseCors("AllowAll");
 
             app.UseAuthorization();
 
