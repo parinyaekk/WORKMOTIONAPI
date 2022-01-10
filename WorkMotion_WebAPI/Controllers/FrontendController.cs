@@ -421,7 +421,7 @@ namespace WorkMotion_WebAPI.Controllers
                     request.Information_Profile = jsonData["Information_Profile"];
                     request.Information_Detail = jsonData["Information_Detail"];
                     request.Information_Looking_For = jsonData["Information_Looking_For"];
-                    request.Information_Looking_For_Other = jsonData["Information_Looking_For"];
+                    request.Information_Looking_For_Other = jsonData["Information_Looking_For_Other"];
 
                     //JS INSERT
                     //var Temp = {
@@ -461,7 +461,7 @@ namespace WorkMotion_WebAPI.Controllers
                     AddDataInformation.Information_Profile = jsonData["Information_Profile"];
                     AddDataInformation.Information_Detail = jsonData["Information_Detail"];
                     AddDataInformation.Information_Looking_For = jsonData["Information_Looking_For"];
-                    AddDataInformation.Information_Looking_For_Other = jsonData["Information_Looking_For"];
+                    AddDataInformation.Information_Looking_For_Other = jsonData["Information_Looking_For_Other"];
                     AddDataInformation.CreateBy = "Frontend";
                     AddDataInformation.CreateDate = DateTime.Now;
                     _dbContext.INFORMATION.Add(AddDataInformation);
