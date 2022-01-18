@@ -34,7 +34,7 @@ namespace WorkMotion_WebAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var GetDataTeam = _dbContext.TEAM.Where(x => x.ActiveFlag == true).ToList();
+                    var GetDataTeam = _dbContext.TEAM.Where(x => x.ActiveFlag == true).OrderBy(x => x.Team_Sequence).ToList();
 
                     if (GetDataTeam != null)
                     {
