@@ -415,6 +415,7 @@ namespace WorkMotion_WebAPI.Controllers
                     request.Information_HDYH_Text = jsonData["Information_HDYH_Text"];
                     request.Information_HDYH_Other = jsonData["Information_HDYH_Other"];
                     request.Information_Company_Name = jsonData["Information_Company_Name"];
+                    request.Information_Phone_Number = jsonData["Information_Phone_Number"];
                     request.Information_Email = jsonData["Information_Email"];
                     request.Information_Country_ID = jsonData["Information_Country_ID"];
                     request.Information_Country_Name = jsonData["Information_Country_Name"];
@@ -458,10 +459,12 @@ namespace WorkMotion_WebAPI.Controllers
                     AddDataInformation.Information_Email = jsonData["Information_Email"];
                     AddDataInformation.Information_Country_ID = jsonData["Information_Country_ID"];
                     AddDataInformation.Information_Country_Name = jsonData["Information_Country_Name"];
+                    AddDataInformation.Information_Phone_Number = jsonData["Information_Phone_Number"];
                     AddDataInformation.Information_Profile = jsonData["Information_Profile"];
                     AddDataInformation.Information_Detail = jsonData["Information_Detail"];
                     AddDataInformation.Information_Looking_For = jsonData["Information_Looking_For"];
                     AddDataInformation.Information_Looking_For_Other = jsonData["Information_Looking_For_Other"];
+                    AddDataInformation.ActiveFlag = true;
                     AddDataInformation.CreateBy = "Frontend";
                     AddDataInformation.CreateDate = DateTime.Now;
                     _dbContext.INFORMATION.Add(AddDataInformation);

@@ -650,6 +650,7 @@ namespace WorkMotion_WebAPI.Controllers
                                     Information_Profile =re.Information_Profile,
                                     Information_Detail = re.Information_Detail,
                                     Information_Country_Name = re.Information_Country_Name,
+                                    Information_Phone_Number = re.Information_Phone_Number,
                                 });
                             }
 

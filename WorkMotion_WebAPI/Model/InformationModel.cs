@@ -25,6 +25,7 @@ namespace WorkMotion_WebAPI.Model
             public string Information_Company_Name { get; set; }
             public string Information_Email { get; set; }
             public string Information_Country_Name { get; set; }
+            public string Information_Phone_Number { get; set; }
             public string Information_Profile { get; set; }
             public string Information_Detail { get; set; }
             public string Information_Looking_For { get; set; }
@@ -51,6 +52,7 @@ namespace WorkMotion_WebAPI.Model
             public string Information_Company_Name { get; set; }
             public string Information_Email { get; set; }
             public string Information_Country_Name { get; set; }
+            public string Information_Phone_Number { get; set; }
             public string Information_Profile { get; set; }
             public string Information_Detail { get; set; }
             public string Information_Looking_For { get; set; }
@@ -72,6 +74,7 @@ namespace WorkMotion_WebAPI.Model
             public string Information_Company_Name { get; set; }
             public string Information_Email { get; set; }
             public string Information_Country_Name { get; set; }
+            public string Information_Phone_Number { get; set; }
             public string Information_Profile { get; set; }
             public string Information_Detail { get; set; }
             public string Information_Looking_For { get; set; }
