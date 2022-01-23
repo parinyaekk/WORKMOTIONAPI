@@ -19,6 +19,7 @@ namespace WorkMotion_WebAPI.Model
             public string News_Tags { get; set; }
             public DateTime? News_Publish_Date { get; set; }
             public bool? Is_Display { get; set; }
+            public bool? Is_Highlight { get; set; }
             public bool? ActiveFlag { get; set; }
             public string CreateBy { get; set; }
             public DateTime? CreateDate { get; set; }
@@ -36,6 +37,7 @@ namespace WorkMotion_WebAPI.Model
             public string News_Tags { get; set; }
             public DateTime? News_Publish_Date { get; set; }
             public bool? Is_Display { get; set; }
+            public bool? Is_Highlight { get; set; }
             public string CreateBy { get; set; }
         }
 

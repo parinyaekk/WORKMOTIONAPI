@@ -50,6 +50,7 @@ namespace WorkMotion_WebAPI.Controllers
                                               news.News_Author,
                                               news.News_Tags,
                                               news.News_Publish_Date,
+                                              news.Is_Highlight,
                                               news.Is_Display,
                                               listImages = NewsFile.Where(x => x.FK_News_ID == news.News_ID).ToList(),
                                           }).ToList();
@@ -162,6 +163,53 @@ namespace WorkMotion_WebAPI.Controllers
             }
         }
 
+        [HttpPut("SetHighlightNews")]
+        public async Task<IActionResult> SetHighlightNews(int? News_ID, string CreateBy)
+        {
+            var log = new LOG();
+            string Function_Detail = "";
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (News_ID != null)
+                    {
+                        var dataNews = _dbContext.NEWS.Where(x => x.News_ID == News_ID).FirstOrDefault();
+                        if (dataNews != null)
+                        {
+                            dataNews.Is_Highlight = dataNews.Is_Highlight == null ? true : !dataNews.Is_Highlight;
+                            dataNews.UpdateBy = CreateBy;
+                            dataNews.UpdateDate = DateTime.Now;
+                            _dbContext.SaveChanges();
+
+                            Function_Detail += "News_ID: " + News_ID;
+                            log.Function_Name = "SetDisplayNews";
+                            log.IP_Address = CreateBy;
+                            log.Function_Detail = Function_Detail;
+                            log.Log_Date = DateTime.Now;
+                            _dbContext.LOG.Add(log);
+                            _dbContext.SaveChanges();
+
+                            return Ok(new ResponseModel { Message = Message.Success, Status = APIStatus.Successful });
+                        }
+                    }
+                }
+                return Ok(new ResponseModel { Message = Message.SystemError, Status = APIStatus.SystemError });
+            }
+            catch (Exception ex)
+            {
+                log.Function_Name = "Exception |SetDisplayNews";
+                log.IP_Address = CreateBy;
+                log.Function_Detail = Function_Detail;
+                log.Error_Detail = ex.Message;
+                log.Log_Date = DateTime.Now;
+                _dbContext.LOG.Add(log);
+                _dbContext.SaveChanges();
+
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
+
         [HttpPost("UpdateDataNews")]
         public async Task<IActionResult> UpdateDataNews()
         {
@@ -183,8 +231,6 @@ namespace WorkMotion_WebAPI.Controllers
                     request.News_Publish_Date = jsonData["News_Publish_Date"];
                     request.News_Tags = jsonData["News_Tags"];
                     request.CreateBy = jsonData["CreateBy"];
-                    request.Is_Display = true;
-
                     CreateBy = request.CreateBy;
 
                     var FindDataNews = _dbContext.NEWS.Where(x => x.News_ID == request.News_ID && x.ActiveFlag == true).FirstOrDefault();
@@ -197,7 +243,7 @@ namespace WorkMotion_WebAPI.Controllers
                         FindDataNews.News_Author = jsonData["News_Author"];
                         FindDataNews.News_Publish_Date = jsonData["News_Publish_Date"];
                         FindDataNews.News_Tags = jsonData["News_Tags"];
-                        FindDataNews.Is_Display = true;
+                        FindDataNews.ActiveFlag = true;
                         FindDataNews.UpdateBy = request.CreateBy;
                         FindDataNews.UpdateDate = DateTime.Now;
                         _dbContext.NEWS.Update(FindDataNews);
@@ -256,6 +302,7 @@ namespace WorkMotion_WebAPI.Controllers
                         AddDataNews.News_Author = jsonData["News_Author"];
                         AddDataNews.News_Publish_Date = jsonData["News_Publish_Date"];
                         AddDataNews.News_Tags = jsonData["News_Tags"];
+                        AddDataNews.Is_Highlight = true;
                         AddDataNews.Is_Display = true;
                         AddDataNews.ActiveFlag = true;
                         AddDataNews.CreateBy = request.CreateBy;

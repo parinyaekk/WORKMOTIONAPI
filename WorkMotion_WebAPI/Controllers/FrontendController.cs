@@ -15,6 +15,7 @@ using static WorkMotion_WebAPI.Model.InformationModel;
 using System.Collections.Generic;
 using static WorkMotion_WebAPI.Model.InformationFileModel;
 using Microsoft.AspNetCore.Http;
+using static WorkMotion_WebAPI.Model.NewsModel;
 
 namespace WorkMotion_WebAPI.Controllers
 {
@@ -175,8 +176,47 @@ namespace WorkMotion_WebAPI.Controllers
             }
         }
 
-        [HttpGet("GetDataNewsAndActivities")]
-        public async Task<IActionResult> GetDataNewsAndActivities()
+        [HttpGet("GetDatatNewsHighlight")]
+        public async Task<IActionResult> GetDatatNewsHighlight()
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var dataNews = _dbContext.NEWS.Where(x => x.ActiveFlag == true && x.Is_Highlight == true);
+                    var dataNewsFile = _dbContext.NEWSFILE.Where(x => x.ActiveFlag == true);
+
+                    var results = (from news in dataNews
+                                   select new
+                                   {
+                                       news.News_ID,
+                                       news.News_Title,
+                                       news.News_Content,
+                                       news.News_Main_Image_Path,
+                                       news.News_Author,
+                                       news.News_Tags,
+                                       news.News_Publish_Date,
+                                       news.Is_Highlight,
+                                       news.Is_Display,
+                                       listImages = dataNewsFile.Where(x => x.FK_News_ID == news.News_ID).ToList(),
+                                   }).OrderByDescending(x => x.News_Publish_Date).ToList();
+
+                    if (results != null)
+                    {
+                        return Ok(new ResponseModel { Message = Message.Success, Status = APIStatus.Successful, Data = results });
+                    }
+                    return Ok(new ResponseModel { Message = Message.Failed, Status = APIStatus.Error, Data = null });
+                }
+                return Ok(new ResponseModel { Message = Message.InvalidPostedData, Status = APIStatus.SystemError });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet("GetDataLatestNews")]
+        public async Task<IActionResult> GetDataLatestNews()
         {
             try
             {
@@ -196,8 +236,9 @@ namespace WorkMotion_WebAPI.Controllers
                                        news.News_Tags,
                                        news.News_Publish_Date,
                                        news.Is_Display,
+                                       news.Is_Highlight,
                                        listImages = dataNewsFile.Where(x => x.FK_News_ID == news.News_ID).ToList(),
-                                   }).OrderByDescending(x => x.News_ID).ToList();
+                                   }).OrderByDescending(x => x.News_Publish_Date).ToList();
 
                     if (results != null)
                     {
@@ -213,17 +254,46 @@ namespace WorkMotion_WebAPI.Controllers
             }
         }
 
-        [HttpGet("GetDataLastestNews")]
-        public async Task<IActionResult> GetDataLastestNews(int? News_ID)
+        [HttpGet("GetDataRelatedNews")]
+        public async Task<IActionResult> GetDataRelatedNews(int? News_ID, string News_Tags)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    List<string> lstTags = new List<string>();
+                    try
+                    {
+                        var a = News_Tags.Split(",");
+                        foreach (var item in a)
+                        {
+                            lstTags.Add(item);
+                        }
+                    }
+                    catch
+                    {
+
+                    }
                     var dataNews = _dbContext.NEWS.Where(x => x.ActiveFlag == true && x.News_ID != News_ID);
+
+                    var lstdataNews = new List<NEWS>();
+                    if (lstTags.Count() > 0)
+                    {
+                        foreach (var items in lstTags)
+                        {
+                            var a = dataNews.Where(x => x.News_Tags.Contains(items)).ToList();
+                            foreach (var b in a)
+                            {
+                                var chkdup = lstdataNews.Where(x => x.News_ID == b.News_ID).FirstOrDefault();
+                                if(chkdup == null)
+                                    lstdataNews.Add(b);
+                            }
+                        }
+                    }
                     var dataNewsFile = _dbContext.NEWSFILE.Where(x => x.ActiveFlag == true);
 
-                    var results = (from news in dataNews
+                    var results = (from news in lstdataNews
+                                       //where lstTags.Contains(news.News_Tags)
                                    select new
                                    {
                                        news.News_ID,
@@ -234,6 +304,7 @@ namespace WorkMotion_WebAPI.Controllers
                                        news.News_Tags,
                                        news.News_Publish_Date,
                                        news.Is_Display,
+                                       news.Is_Highlight,
                                        listImages = dataNewsFile.Where(x => x.FK_News_ID == news.News_ID).ToList(),
                                    }).OrderByDescending(x => x.News_ID).ToList();
 
