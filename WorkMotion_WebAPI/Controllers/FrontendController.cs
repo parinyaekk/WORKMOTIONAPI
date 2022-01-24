@@ -216,6 +216,45 @@ namespace WorkMotion_WebAPI.Controllers
             }
         }
 
+        [HttpGet("GetDatatDetailNews")]
+        public async Task<IActionResult> GetDatatDetailNews(int? News_ID)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var dataNews = _dbContext.NEWS.Where(x => x.ActiveFlag == true && x.News_ID == News_ID);
+                    var dataNewsFile = _dbContext.NEWSFILE.Where(x => x.ActiveFlag == true);
+
+                    var results = (from news in dataNews
+                                   select new
+                                   {
+                                       news.News_ID,
+                                       news.News_Title,
+                                       news.News_Content,
+                                       news.News_Main_Image_Path,
+                                       news.News_Author,
+                                       news.News_Tags,
+                                       news.News_Publish_Date,
+                                       news.Is_Highlight,
+                                       news.Is_Display,
+                                       listImages = dataNewsFile.Where(x => x.FK_News_ID == news.News_ID).ToList(),
+                                   }).FirstOrDefault();
+
+                    if (results != null)
+                    {
+                        return Ok(new ResponseModel { Message = Message.Success, Status = APIStatus.Successful, Data = results });
+                    }
+                    return Ok(new ResponseModel { Message = Message.Failed, Status = APIStatus.Error, Data = null });
+                }
+                return Ok(new ResponseModel { Message = Message.InvalidPostedData, Status = APIStatus.SystemError });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         [HttpGet("GetDataLatestNews")]
         public async Task<IActionResult> GetDataLatestNews()
         {
