@@ -62,6 +62,7 @@ namespace WorkMotion_WebAPI
                     "http://localhost:3001",
                     "https://topventure-api.myip.in.th/",
                     "https://topventure.myip.in.th/",
+                    "http://tvg.digisolution.co.th/",
                 });
                 builder.AllowAnyHeader();
                 builder.WithExposedHeaders("Token-Expired");
