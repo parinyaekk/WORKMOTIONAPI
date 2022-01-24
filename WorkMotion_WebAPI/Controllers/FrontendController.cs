@@ -449,28 +449,7 @@ namespace WorkMotion_WebAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var results = (from a in _dbContext.PORTFOLIO.Where(x => x.ActiveFlag == true && x.Portfolio_Section == 2)
-                                   join b in _dbContext.INDUSTRIES.Where(x => x.ActiveFlag == true) on a.FK_Industries_ID equals b.Industries_ID
-                                   select new Response_PORTFOLIO
-                                   {
-                                       Portfolio_ID = a.Portfolio_ID,
-                                       FK_Industries_ID = a.FK_Industries_ID,
-                                       Industries_Name = b.Industries_Name,
-                                       Portfolio_About = a.Portfolio_About,
-                                       Portfolio_Contact_LinkedIn = a.Portfolio_Contact_LinkedIn,
-                                       Portfolio_Contact_Website = a.Portfolio_Contact_Website,
-                                       Portfolio_Logo_Path = a.Portfolio_Logo_Path,
-                                       Portfolio_Location = a.Portfolio_Location,
-                                       Portfolio_Name = a.Portfolio_Name,
-                                       Portfolio_Section = a.Portfolio_Section,
-                                       Portfolio_Technology = a.Portfolio_Technology,
-                                       ActiveFlag = a.ActiveFlag,
-                                       CreateBy = a.CreateBy,
-                                       CreateDate = a.CreateDate,
-                                       UpdateBy = a.UpdateBy,
-                                       UpdateDate = a.UpdateDate
-                                   }
-                                   ).ToList();
+                    var results = _dbContext.PORTFOLIO.Where(x => x.ActiveFlag == true && x.Portfolio_Section == 2).ToList();
 
                     if (results != null)
                     {
@@ -493,29 +472,7 @@ namespace WorkMotion_WebAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var results = (from a in _dbContext.PORTFOLIO.Where(x => x.ActiveFlag == true && x.Portfolio_Section == 3)
-                                   join b in _dbContext.INDUSTRIES.Where(x => x.ActiveFlag == true) on a.FK_Industries_ID equals b.Industries_ID
-                                   select new Response_PORTFOLIO
-                                   {
-                                       Portfolio_ID = a.Portfolio_ID,
-                                       FK_Industries_ID = a.FK_Industries_ID,
-                                       Industries_Name = b.Industries_Name,
-                                       Portfolio_About = a.Portfolio_About,
-                                       Portfolio_Contact_LinkedIn = a.Portfolio_Contact_LinkedIn,
-                                       Portfolio_Contact_Website = a.Portfolio_Contact_Website,
-                                       Portfolio_Logo_Path = a.Portfolio_Logo_Path,
-                                       Portfolio_Location = a.Portfolio_Location,
-                                       Portfolio_Name = a.Portfolio_Name,
-                                       Portfolio_Section = a.Portfolio_Section,
-                                       Portfolio_Technology = a.Portfolio_Technology,
-                                       ActiveFlag = a.ActiveFlag,
-                                       CreateBy = a.CreateBy,
-                                       CreateDate = a.CreateDate,
-                                       UpdateBy = a.UpdateBy,
-                                       UpdateDate = a.UpdateDate
-                                   }
-                                   ).ToList();
-
+                    var results = _dbContext.PORTFOLIO.Where(x => x.ActiveFlag == true && x.Portfolio_Section == 3).ToList();
 
                     if (results != null)
                     {

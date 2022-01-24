@@ -13,6 +13,7 @@ namespace WorkMotion_WebAPI.Model
             [Key]
             public int Industries_ID { get; set; }
             public string Industries_Name { get; set; }
+            public string Industries_Image_Path { get; set; }
             public string Industries_Description { get; set; }
             public bool? ActiveFlag { get; set; }
             public string CreateBy { get; set; }
@@ -26,6 +27,7 @@ namespace WorkMotion_WebAPI.Model
         {
             public int? Industries_ID { get; set; }
             public string Industries_Name { get; set; }
+            public string Industries_Image_Path { get; set; }
             public string Industries_Description { get; set; }
             public bool? ActiveFlag { get; set; }
             public string CreateBy { get; set; }

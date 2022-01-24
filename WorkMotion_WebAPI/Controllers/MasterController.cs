@@ -74,6 +74,7 @@ namespace WorkMotion_WebAPI.Controllers
                     if (OldData != null)
                     {
                         OldData.Industries_Name = request.Industries_Name;
+                        OldData.Industries_Image_Path = request.Industries_Image_Path;
                         OldData.Industries_Description = request.Industries_Description;
                         OldData.UpdateBy = request.CreateBy;
                         OldData.UpdateDate = DateTime.Now;
