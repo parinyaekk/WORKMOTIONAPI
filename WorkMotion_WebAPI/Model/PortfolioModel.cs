@@ -28,6 +28,26 @@ namespace WorkMotion_WebAPI.Model
             public DateTime? UpdateDate { get; set; }
         }
 
+        public class Response_PORTFOLIO
+        {
+            public int Portfolio_ID { get; set; }
+            public int? FK_Industries_ID { get; set; }
+            public string Industries_Name { get; set; }
+            public int Portfolio_Section { get; set; }
+            public string Portfolio_Name { get; set; }
+            public string Portfolio_Logo_Path { get; set; }
+            public string Portfolio_About { get; set; }
+            public string Portfolio_Technology { get; set; }
+            public string Portfolio_Location { get; set; }
+            public string Portfolio_Contact_Website { get; set; }
+            public string Portfolio_Contact_LinkedIn { get; set; }
+            public bool? ActiveFlag { get; set; }
+            public string CreateBy { get; set; }
+            public DateTime? CreateDate { get; set; }
+            public string UpdateBy { get; set; }
+            public DateTime? UpdateDate { get; set; }
+        }
+
         public class Request_Portfolio
         {
             public int? Portfolio_ID { get; set; }
