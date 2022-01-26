@@ -593,7 +593,34 @@ namespace WorkMotion_WebAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var results = _dbContext.INFORMATION.Where(x => x.ActiveFlag == true).OrderByDescending(x => x.Information_ID).ToList();
+                    var results = (from a in _dbContext.INFORMATION.Where(x => x.ActiveFlag == true)
+                                //join b1 in _dbContext.INFORMATIONFILE.Where(x => x.ActiveFlag == true) on a.Information_ID equals b1.FK_Information_ID into b2.
+                                select new
+                                {
+                                    Information_ID = a.Information_ID,
+                                    Information_Categories_Text = a.Information_Categories_Text,
+                                    Information_Country_ID = a.Information_Country_ID,
+                                    Information_Company_Name = a.Information_Company_Name,
+                                    Information_Country_Name = a.Information_Country_Name,
+                                    Information_Detail = a.Information_Detail,
+                                    Information_Email = a.Information_Email,
+                                    Information_HDYH_Other = a.Information_HDYH_Other,
+                                    Information_HDYH_Text = a.Information_HDYH_Text,
+                                    Information_Industries_Text = a.Information_Industries_Text,
+                                    Information_Looking_For = a.Information_Looking_For,
+                                    Information_Looking_For_Other = a.Information_Looking_For_Other,
+                                    Information_Profile = a.Information_Profile,
+                                    Information_Phone_Number = a.Information_Phone_Number,
+                                    Information_Startup_Option_Text = a.Information_Startup_Option_Text,
+                                    FK_Categories_ID = a.FK_Categories_ID,
+                                    FK_HDYH_Option_ID = a.FK_HDYH_Option_ID,
+                                    FK_Startup_Option_ID = a.FK_Startup_Option_ID,
+                                    FK_Industries_ID = a.FK_Industries_ID,
+                                    Information_File = _dbContext.INFORMATIONFILE.Where(x => x.ActiveFlag == true && x.FK_Information_ID == a.Information_ID).OrderByDescending(x => x.FK_Information_ID).ToList(),
+                                    ActiveFlag = a.ActiveFlag,
+
+                                }).OrderByDescending(x => x.Information_ID).ToList();
+                    //var results = _dbContext.INFORMATION.Where(x => x.ActiveFlag == true).OrderByDescending(x => x.Information_ID).ToList();
 
                     if (results != null)
                     {
